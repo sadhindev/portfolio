@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 100);
 
     /* =========================================
-       Form Submission (Prevent Default for Demo)
+       Form Submission (Integration with FormSubmit)
        ========================================= */
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
@@ -141,24 +141,43 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             const btn = contactForm.querySelector('button');
             const originalText = btn.innerHTML;
-
+            
             // Simple button feedback animation
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
             btn.style.opacity = '0.8';
-
-            setTimeout(() => {
+            
+            const formData = new FormData(contactForm);
+            
+            fetch("https://formsubmit.co/ajax/sadhin2814@gmail.com", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
                 btn.innerHTML = '<i class="fas fa-check"></i> Message Sent!';
                 btn.style.background = '#10b981'; // Success green
                 btn.style.color = 'white';
                 contactForm.reset();
-
+                
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.style.background = ''; // reset to css
                     btn.style.color = '';
                     btn.style.opacity = '1';
                 }, 3000);
-            }, 1500);
+            })
+            .catch(error => {
+                btn.innerHTML = '<i class="fas fa-times"></i> Failed';
+                btn.style.background = '#ef4444'; // Error red
+                btn.style.color = 'white';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.style.color = '';
+                    btn.style.opacity = '1';
+                }, 3000);
+            });
         });
     }
 
