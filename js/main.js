@@ -280,4 +280,100 @@ document.addEventListener('DOMContentLoaded', () => {
             updateLanguage(newLang);
         });
     }
+
+    /* =========================================
+       Project Filters Logic
+       ========================================= */
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const projectItems = document.querySelectorAll('.project-item');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterBtns.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            const filterValue = btn.getAttribute('data-filter');
+
+            projectItems.forEach(item => {
+                if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                    item.classList.remove('hide');
+                    setTimeout(() => {
+                        item.style.display = 'flex';
+                    }, 10);
+                } else {
+                    item.classList.add('hide');
+                    setTimeout(() => {
+                        item.style.display = 'none';
+                    }, 400); // Wait for transition
+                }
+            });
+        });
+    });
+
+    /* =========================================
+       Back to Top Button Logic
+       ========================================= */
+    const backToTopBtn = document.getElementById('back-to-top');
+    if (backToTopBtn) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    /* =========================================
+       Blog Fetching Logic (Dev.to)
+       ========================================= */
+    const blogContainer = document.getElementById('blog-container');
+    if (blogContainer) {
+        // Since no username was provided, fallback to a popular flutter topic or just sadhindev if exists
+        const username = 'sadhindev'; 
+        
+        // Let's fetch from dev.to tag flutter if username fails, or just fetch tag flutter
+        fetch(`https://dev.to/api/articles?tag=flutter&top=10`)
+            .then(res => res.json())
+            .then(data => {
+                blogContainer.innerHTML = ''; // Clear loading
+                // Take first 3 articles
+                const articles = data.slice(0, 3);
+                
+                articles.forEach((article, index) => {
+                    const delay = index * 200;
+                    const date = new Date(article.published_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    
+                    const blogHTML = `
+                        <div class="blog-card glass-card revealed" style="animation-delay: ${delay}ms; transition: all 1s ease;">
+                            <img src="${article.cover_image || 'https://images.unsplash.com/photo-1555099962-4199c345e5dd?q=80&w=600&auto=format&fit=crop'}" alt="${article.title}">
+                            <div class="blog-content">
+                                <span class="blog-date">${date}</span>
+                                <h3>${article.title}</h3>
+                                <a href="${article.url}" target="_blank" class="btn btn-outline">Read More</a>
+                            </div>
+                        </div>
+                    `;
+                    blogContainer.insertAdjacentHTML('beforeend', blogHTML);
+                });
+            })
+            .catch(err => {
+                blogContainer.innerHTML = `
+                    <div class="glass-card text-center" style="grid-column: 1 / -1; padding: 2rem;">
+                        <p style="color: var(--text-secondary);">Could not load articles at this time.</p>
+                    </div>
+                `;
+            });
+    }
 });
