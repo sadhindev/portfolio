@@ -500,47 +500,76 @@ header.scrolled::after {
     position: relative;
 }
 
-.image-wrapper {
+.orbit-container {
     position: relative;
     width: 350px;
-    height: 450px;
-    border-radius: 20px;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.profile-img {
+.orbit-center {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    z-index: 10;
+    border: 4px solid var(--accent-color);
+    box-shadow: 0 0 30px rgba(69, 243, 255, 0.3);
+    overflow: hidden;
+    position: relative;
+}
+
+.orbit-center img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 20px;
-    border: 2px solid var(--glass-border);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
 }
 
-.floating-icon {
+.orbit-ring {
     position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px dashed var(--glass-border);
+    animation: orbitRotate 20s linear infinite;
+}
+
+.orbit-icon {
+    position: absolute;
+    width: 50px;
+    height: 50px;
     background: var(--glass-bg);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
-    padding: 1rem;
-    border-radius: 12px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    animation: float 4s infinite ease-in-out alternate;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    /* Counter-rotate to keep icon upright */
+    animation: orbitCounterRotate 20s linear infinite;
 }
 
-.flutter-icon {
-    top: 10%;
-    left: -10%;
-    font-size: 2rem;
-    color: #45d1fd;
+.orbit-icon:hover {
+    transform: scale(1.2) rotate(0deg); /* Adjust hover if needed */
+    box-shadow: 0 0 15px var(--accent-color);
 }
 
-.dart-icon {
-    bottom: 20%;
-    right: -10%;
-    font-family: var(--font-code);
-    font-weight: bold;
-    color: #00B4AB;
-    animation-delay: -2s;
+.icon-1 { top: -25px; left: calc(50% - 25px); }
+.icon-2 { bottom: -25px; left: calc(50% - 25px); }
+.icon-3 { left: -25px; top: calc(50% - 25px); }
+.icon-4 { right: -25px; top: calc(50% - 25px); }
+
+@keyframes orbitRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes orbitCounterRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(-360deg); }
 }
 
 /* =========================================
