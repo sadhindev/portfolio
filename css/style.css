@@ -468,6 +468,8 @@ header.scrolled::after {
     margin-top: 2rem;
     display: flex;
     gap: 1.5rem;
+    position: relative;
+    z-index: 50;
 }
 
 .social-links a {
@@ -557,10 +559,14 @@ header.scrolled::after {
     box-shadow: 0 0 15px var(--accent-color);
 }
 
-.icon-1 { top: -25px; left: calc(50% - 25px); }
-.icon-2 { bottom: -25px; left: calc(50% - 25px); }
-.icon-3 { left: -25px; top: calc(50% - 25px); }
-.icon-4 { right: -25px; top: calc(50% - 25px); }
+.icon-1 { left: calc(100% - 25px); top: calc(50% - 25px); }
+.icon-2 { left: calc(85.35% - 25px); top: calc(85.35% - 25px); }
+.icon-3 { left: calc(50% - 25px); top: calc(100% - 25px); }
+.icon-4 { left: calc(14.65% - 25px); top: calc(85.35% - 25px); }
+.icon-5 { left: -25px; top: calc(50% - 25px); }
+.icon-6 { left: calc(14.65% - 25px); top: calc(14.65% - 25px); }
+.icon-7 { left: calc(50% - 25px); top: -25px; }
+.icon-8 { left: calc(85.35% - 25px); top: calc(14.65% - 25px); }
 
 @keyframes orbitRotate {
     0% { transform: rotate(0deg); }
@@ -706,6 +712,7 @@ header.scrolled::after {
     gap: 1.5rem;
     opacity: 0;
     transition: var(--transition);
+    z-index: 20;
 }
 
 .project-card:hover .project-links {
